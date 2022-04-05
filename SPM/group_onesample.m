@@ -4,13 +4,13 @@
 
 clear all
 addpath('/home/common/matlab/spm12/')
-cd /project/3011226.01/scripts/
+cd /project/3011226.02/scripts/
 
-firstleveldir = '/project/3011226.01/bids/derivatives/SPM/firstlevel/';
+firstleveldir = '/project/3011226.02/bids/derivatives/SPM/firstlevel/';
 subjectlist=1:40;
 task = 'voice_single';
 onesample_tests = {'voice_univariate','csize'}
-contrast_numbers = [9,10];
+contrast_numbers = [21,22];
 for t = 1:length(onesample_tests)
     test = onesample_tests(t)
     con_n = contrast_numbers(t);
@@ -28,10 +28,10 @@ for t = 1:length(onesample_tests)
     % 49: int_se_PC, 
     % 50: int_se_CP
     %matlabbatch{1}.spm.stats.factorial_design.dir = {['/project/3011226.01/bids/derivatives/SPM/group/' test{1,1} '/']};
-    mkdir(['/project/3011226.01/bids/derivatives/SPM/grouplevel/' test{1,1} ])
+    mkdir(['/project/3011226.02/bids/derivatives/SPM/grouplevel/' test{1,1} ])
     
 
-    matlabbatch{1}.spm.stats.factorial_design.dir = {['/project/3011226.01/bids/derivatives/SPM/grouplevel/' test{1,1} '/']};
+    matlabbatch{1}.spm.stats.factorial_design.dir = {['/project/3011226.02/bids/derivatives/SPM/grouplevel/' test{1,1} '/']};
     for i = 1:length(subjectlist)
         s = subjectlist(i);
         subj = ['sub-0' sprintf('%02d', s)];
@@ -59,7 +59,7 @@ for t = 1:length(onesample_tests)
 spm('defaults','fmri');
 spm_jobman('initcfg'); 
 
-matlabbatch{1}.spm.stats.fmri_est.spmmat = {['/project/3011226.01/bids/derivatives/SPM/group_correct/' test{1,1} '/SPM.mat']};
+matlabbatch{1}.spm.stats.fmri_est.spmmat = {['/project/3011226.02/bids/derivatives/SPM/grouplevel/' test{1,1} '/SPM.mat']};
 matlabbatch{1}.spm.stats.fmri_est.write_residuals = 0;
 matlabbatch{1}.spm.stats.fmri_est.method.Classical = 1;
 

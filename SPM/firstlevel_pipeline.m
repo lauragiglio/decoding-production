@@ -10,35 +10,40 @@ end
 
 %% task regressors
 for s = 1:40
-    task_regs_voice_single(s)
+    task_regs_sent_prod(s)
 end
 
 %% first level analysis
 
-for s = 4:40
-    req_mem   = 8000000000;
+for s = 2:40
+    req_mem   = 16000000000;
     req_time = 3600;
-    jobs{s} = qsubfeval(@specify_first_level, s, 'voice_single',  'memreq',  req_mem,  'timreq',  req_time);
+    jobs{s} = qsubfeval(@specify_first_level, s, 'sents_prod',  'memreq',  req_mem,  'timreq',  req_time);
 end
 %save 'jobs.mat' jobs
 
-for s = 3:40
-    req_mem   = 12000000000;
+for s = 1:40
+    req_mem   = 16000000000;
+    req_time = 14400; % 4 hours
+    jobsest{s} = qsubfeval(@estimate_first_level, s, 'sents_prod',  'memreq',  req_mem,  'timreq',  req_time);
+end
+
+for s = 1:40
+    req_mem   = 6000000000;
     req_time = 3600;
-    jobsest{s} = qsubfeval(@estimate_first_level, s, 'voice_single',  'memreq',  req_mem,  'timreq',  req_time);
+    jobscon{s} = qsubfeval(@contrasts_cat, s, 'sents_prod', 1, 'memreq',  req_mem,  'timreq',  req_time);
 end
+
+% for s = 1:40
+%     req_mem   = 4000000000;
+%     req_time = 600;
+%     jobsest{s} = qsubfeval(@contrasts_cat_univariate, s, 'voice_single', 0, 'memreq',  req_mem,  'timreq',  req_time);
+% end
 
 for s = 1:40
-    req_mem   = 4000000000;
-    req_time = 600;
-    jobsest{s} = qsubfeval(@contrasts_cat_single, s, 'voice_single', 0, 'memreq',  req_mem,  'timreq',  req_time);
+    subj = sprintf('%02d', s);
+    subjdir = ['sub-0' subj];
+
+    mkdir(['/project/3011226.02/bids/derivatives/pyMVPA/' subjdir '/allsents/accs'])
+    mkdir(['/project/3011226.02/bids/derivatives/pyMVPA/' subjdir '/allsents/perms'])
 end
-
-for s = 1:40
-    req_mem   = 4000000000;
-    req_time = 600;
-    jobsest{s} = qsubfeval(@contrasts_cat_univariate, s, 'voice_single', 1, 'memreq',  req_mem,  'timreq',  req_time);
-end
-
-
-
