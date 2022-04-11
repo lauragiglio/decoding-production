@@ -9,9 +9,9 @@ s = sys.argv[1]
 print(s)
 task = sys.argv[2]
 print(task)
-#nruns = int(sys.argv[3])
-#con1 = int(sys.argv[4])
-mask = sys.argv[3]
+nruns = int(sys.argv[3])
+con1 = int(sys.argv[4])
+mask = sys.argv[5]
 print(mask)
 
 #s=2
@@ -51,7 +51,7 @@ run_ds = fmri_dataset(samples = bold_fname, targets = attr.targets, chunks = att
     
 fds = vstack(run_ds, a=0)
 fds = remove_nonfinite_features(fds)
-
+fds = remove_invariant_features(fds)
         
                    
 ### PERMUTATIONS
@@ -60,11 +60,11 @@ res1=[]
 for p in range(1,101):
     perm=AttributePermutator("targets", limit="chunks",rng=7*p)
 
-    print perm
+    #print perm
 
     fds=perm(fds)
 
-    #print fds.targets
+    print fds.targets
 
     clf = LinearCSVMC()
 
@@ -88,6 +88,12 @@ zscore(fds)
 
 res2=[]
 for p in range(1,101):
+
+    perm=AttributePermutator("targets", limit="chunks",rng=7*p)
+
+    #print perm
+
+    fds=perm(fds)
 
     clf = LinearCSVMC()
 

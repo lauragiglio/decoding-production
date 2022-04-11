@@ -9,9 +9,9 @@ s = sys.argv[1]
 print(s)
 task = sys.argv[2]
 print(task)
-#nruns = int(sys.argv[3])
-#con1 = int(sys.argv[4])
-mask = sys.argv[3]
+nruns = int(sys.argv[3])
+con1 = int(sys.argv[4])
+mask = sys.argv[5]
 print(mask)
 
 #s=2
@@ -51,7 +51,7 @@ run_ds = fmri_dataset(samples = bold_fname, targets = attr.targets, chunks = att
     
 fds = vstack(run_ds, a=0)
 fds = remove_nonfinite_features(fds)
-
+fds = remove_invariant_features(fds)
 
 # next only works with floating point data
 
@@ -128,7 +128,7 @@ with open(MVPAdir+"/accs/"+col+"_z.txt", "w") as text_file:
                     
                     
 ### SEARCHLIGHT
-if mask == 'brain':
+if mask == 'GMunion':
     clf = LinearCSVMC()
 
     cvte = CrossValidation(clf, NFoldPartitioner(), errorfx = mean_match_accuracy, postproc = mean_sample(), enable_ca=['stats'])

@@ -72,7 +72,7 @@ fds.sa
 
 
 fds = remove_nonfinite_features(fds)
-
+fds = remove_invariant_features(fds)
 
 zscore(fds)
 
@@ -117,42 +117,42 @@ print frac_higher
 
 
 # PERM2
-p = p + 50
-perm=AttributePermutator("targets", limit="chunks",rng=7*p)
+#p = p + 50
+#perm=AttributePermutator("targets", limit="chunks",rng=7*p)
 
-print perm
+#print perm
 
-fds=perm(fds)
+#fds=perm(fds)
 
-print fds.targets
+#print fds.targets
 
-clf = LinearCSVMC()
+#clf = LinearCSVMC()
 
-cvte = CrossValidation(clf, NFoldPartitioner(), errorfx = mean_match_accuracy, postproc = mean_sample(), enable_ca=['stats'])
+#cvte = CrossValidation(clf, NFoldPartitioner(), errorfx = mean_match_accuracy, postproc = mean_sample(), enable_ca=['stats'])
 
-sl = sphere_searchlight(cvte, radius=5, postproc=mean_sample())
+#sl = sphere_searchlight(cvte, radius=5, postproc=mean_sample())
 
-res = sl(fds)
+#res = sl(fds)
 
-map2nifti(res,imghdr = fds.a.imghdr).to_filename(MVPAdir + '/perms/sl_'+col+'_perm-%.3i.nii.gz' % p)
+#map2nifti(res,imghdr = fds.a.imghdr).to_filename(MVPAdir + '/perms/sl_'+col+'_perm-%.3i.nii.gz' % p)
 
-sphere_acc = res.samples[0]
+#sphere_acc = res.samples[0]
 
-res_mean = np.mean(res)
+#res_mean = np.mean(res)
 
-res_std = np.std(res)
+#res_std = np.std(res)
 
-print res_mean
-print res_std
+#print res_mean
+#print res_std
 
 #res.save(os.path.join(MVPAdir, subjdir, 'sl-prod-%.3i.hdf5' % p))
 
 # mean empirical error below chance level: but in all sphere
 
 # check for how many sphere error > 2stds lower than chance
-chance_level = (1.0 / len(fds.uniquetargets))
+#chance_level = (1.0 / len(fds.uniquetargets))
 
-frac_higher = np.round(np.mean(sphere_acc > chance_level + 2 * res_std), 3)
-print frac_higher
+#frac_higher = np.round(np.mean(sphere_acc > chance_level + 2 * res_std), 3)
+#print frac_higher
 
 

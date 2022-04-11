@@ -17,7 +17,7 @@ accs = pd.read_csv('P:/3011226.02/bids/derivatives/pyMVPA/cond4/class_acc.csv')
 s=1
 subj = str(s).zfill(2)
 subjdir = 'sub-0'+subj
-files = os.listdir("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/cond4/accs/")
+files = os.listdir("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/allsents/accs/")
 for file in files:
     print(file)
     if ('txt' in file) & ('perms' not in file):
@@ -28,15 +28,15 @@ for file in files:
 for s in range(1,41):
     subj = str(s).zfill(2)
     subjdir = 'sub-0'+subj
-    files = os.listdir("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/cond4/accs/")
+    files = os.listdir("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/allsents/accs/")
     for file in files:
         if ('txt' in file) & ('perms' not in file):
             task = file[:-4]
-            with open("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/cond4/accs/"+file) as f:
+            with open("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/allsents/accs/"+file) as f:
                 lines = f.readlines()
             accs[task][accs.subject==subjdir] = lines
         
-accs.to_csv('P:/3011226.02/bids/derivatives/pyMVPA/cond4/class_acc.csv')        
+accs.to_csv('P:/3011226.02/bids/derivatives/pyMVPA/allsents/class_acc.csv')        
 
 
 # permutation tests
@@ -49,7 +49,7 @@ subjdir = 'sub-0'+subj
 decacc = pd.DataFrame(index=range(0,120),columns={'task','perc','acc','pvalue'})
 perms_sub = pd.DataFrame(index=range(0,100),columns={'permn'})
 
-files = os.listdir("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/cond4/accs/")
+files = os.listdir("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/allsents/accs/")
 n=0
 
 for file in files:
@@ -60,7 +60,7 @@ for file in files:
         for s in range(1,41):
             subj = str(s).zfill(2)
             subjdir = 'sub-0'+subj
-            with open("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/cond4/accs/"+file,'r') as f:
+            with open("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/allsents/accs/"+file,'r') as f:
                 perms = f.read().split(', ')
             
             perms[0] = perms[0][1:]
@@ -78,13 +78,14 @@ for file in files:
             #    print(p)
         perc = np.percentile(permsall,95)
         plt.hist(permsall,density=True,bins=30)
+        
         decacc.perc[n]=perc
         acc=[]
         for s in range(1,41):
             subj = str(s).zfill(2)
             subjdir = 'sub-0'+subj
 
-            with open("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/cond4/accs/"+file[:-10]+'.txt') as f:
+            with open("P:/3011226.02/bids/derivatives/pyMVPA/"+subjdir+"/allsents/accs/"+file[:-10]+'.txt') as f:
                 lines = f.readlines()
             acc.append(float(lines[0]))
             
@@ -92,7 +93,7 @@ for file in files:
         decacc.pvalue[n] = sum(permsall>np.mean(acc))/100000
         n=n+1
         
-decacc.to_csv('P:/3011226.02/bids/derivatives/pyMVPA/cond4/acc_sign_perm.csv')
+decacc.to_csv('P:/3011226.02/bids/derivatives/pyMVPA/allsents/acc_sign_perm.csv')
 
-
-
+plt.hist(permsall,density=True,bins=30)
+plt.hist(accs.voice_cat_syntactic_z)

@@ -68,7 +68,7 @@ fds.sa
 
 
 fds = remove_nonfinite_features(fds)
-
+fds = remove_invariant_features(fds)
 
    
     

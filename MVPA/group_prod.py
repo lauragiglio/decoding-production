@@ -29,7 +29,7 @@ for s in subjectlist:
 
     subjdir = 'sub-0'+subj
     
-    subj_ds = fmri_dataset(os.path.join(MVPAdir, subjdir, 'single/sl_'+task+'_'+ mask +'.nii.gz'), chunks=s, mask=mask_fname)
+    subj_ds = fmri_dataset(os.path.join(MVPAdir, subjdir, 'cond4/sl_'+task+'_'+ mask +'.nii.gz'), chunks=s, mask=mask_fname)
 
     subj_datasets.append(subj_ds)
 
@@ -43,7 +43,7 @@ for s in subjectlist:
     subj = str(s).zfill(2)
     subjdir = 'sub-0'+subj
 
-    tmaps = glob.glob(os.path.join(MVPAdir, subjdir, 'single/perms/sl_'+task+'_'+ mask +'_perm-*')) 
+    tmaps = glob.glob(os.path.join(MVPAdir, subjdir, 'cond4/perms/sl_'+task+'_'+ mask +'_perm-*')) 
     if len(tmaps) != 100:        
         print subj
         print len(tmaps)
@@ -54,7 +54,7 @@ for s in subjectlist:
     subj = str(s).zfill(2)
     subjdir = 'sub-0'+subj
 
-    tmaps = glob.glob(os.path.join(MVPAdir, subjdir, 'single/perms/sl_'+task+'_'+ mask +'_perm-*'))  
+    tmaps = glob.glob(os.path.join(MVPAdir, subjdir, 'cond4/perms/sl_'+task+'_'+ mask +'_perm-*'))  
     if len(tmaps) == 100:        
         for perm in tmaps:
             perm_ds = fmri_dataset(perm, chunks=s, mask=mask_fname)
@@ -84,7 +84,7 @@ cluster = GroupClusterThreshold(n_bootstrap=bootstrap,
 
                                 n_blocks=1000,
 
-                                n_proc=1,
+                                n_proc=4,
 
                                 fwe_rate=fwe_rate,
 
